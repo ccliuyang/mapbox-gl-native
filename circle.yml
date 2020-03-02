@@ -152,8 +152,9 @@ workflows:
           target_is_macos: true
           requires:
             - macos-xcode11-release
-          config_params: '-G Ninja -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Debug'
+          config_params: '-G Ninja -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Debug -DMBGL_WITH_COVERAGE=ON'
           style_tests: true
+          upload_coverage: true
       - build-template:
           name: ios-xcode11-release
           executor_name: macos-11_3_1
@@ -562,6 +563,10 @@ jobs:
     steps:
       - checkout
       - prepare
+      - run:
+          name: Install build tools
+          command: |
+            apt install -y automake libtool
       - run:
           name: Build UnitTestRunner APK
           command: |
